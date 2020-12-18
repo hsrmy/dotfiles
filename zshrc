@@ -4,7 +4,7 @@ export LANG=ja_JP.UTF-8
 export EDITOR=nano
 
 # 補完機能を有効にする
-fpath=(/usr/local/share/zsh-completions/src $fpath)
+fpath=(/usr/local/share/zsh-completions/src /usr/share/zsh/vendor-completions $fpath)
 autoload -U compinit; compinit -u
 # 大文字小文字を区別せず補完する
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
@@ -33,3 +33,6 @@ alias dco="docker-compose"
 
 # direnv
 eval "$(direnv hook zsh)"
+
+# fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
