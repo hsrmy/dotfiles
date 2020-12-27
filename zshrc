@@ -37,7 +37,7 @@ local DOTFILES=$(dirname $(realpath ${HOME}/.zshrc))
 if [ "$(uname)" = 'Darwin' ]; then
   source ${DOTFILES}/zsh/darwin.zshrc    
 elif [ "$(expr substr $(uname -s) 1 5)" = 'Linux' ]; then
-  source  ${DOTFILES}/zsh/linux.zshrc
+  source ${DOTFILES}/zsh/linux.zshrc
 fi
 
 [ -f ${DOTFILES}/p10k.zsh ] && source ${DOTFILES}/p10k.zsh
