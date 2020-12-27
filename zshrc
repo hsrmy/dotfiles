@@ -48,12 +48,18 @@ fi
 [ -f ${DOTFILES}/p10k.zsh ] && source ${DOTFILES}/p10k.zsh
 source ${DOTFILES}/zsh/theme/powerlevel/powerlevel10k.zsh-theme
 
+# go path
+export GOPATH=$HOME/.go
+export PATH=$GOPATH/bin:$PATH
+
+# anyenv configuretion 
+[ -x $(which anyenv) ] && eval "$(anyenv init -)"
+
 # direnv configuration
 [ -x $(which direnv) ] && eval "$(direnv hook zsh)"
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 
 function command_not_found_handler() {
   if [ $(( $(od -vAn --width=4 -tu4 -N4 </dev/urandom) % 5 )) -lt 4 ]; then
