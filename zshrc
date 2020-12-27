@@ -38,11 +38,6 @@ if [ "$(uname)" = 'Darwin' ]; then
   source ${DOTFILES}/zsh/darwin.zshrc    
 elif [ "$(expr substr $(uname -s) 1 5)" = 'Linux' ]; then
   source  ${DOTFILES}/zsh/linux.zshrc
-  if [ -e /etc/debian_version -o -e /etc/debian_release ]; then
-    source ${DOTFILES}/zsh/debian.zshrc
-  elif [ -e /etc/arch-release ]; then
-    source ${DOTFILES}/zsh/archlinux.zshrc
-  fi
 fi
 
 [ -f ${DOTFILES}/p10k.zsh ] && source ${DOTFILES}/p10k.zsh
@@ -56,7 +51,7 @@ export PATH=$GOPATH/bin:$PATH
 [ -f /opt/anyenv/bin/anyenv ] && eval "$(anyenv init -)"
 
 # direnv configuration
-[ -f $(which direnv) ] && eval "$(direnv hook zsh)"
+[ -f /usr/local/bin/direnv ] && eval "$(direnv hook zsh)"
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
