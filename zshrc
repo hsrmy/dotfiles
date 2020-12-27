@@ -30,6 +30,7 @@ setopt hist_ignore_dups share_history hist_no_store
 setopt auto_pushd list_packed nolistbeep
 
 # Alias configuration
+alias ls="ls --color"
 alias dco="docker-compose"
 
 local DOTFILES=$(dirname $(realpath ${HOME}/.zshrc))
