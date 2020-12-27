@@ -2,15 +2,14 @@
 export EDITOR=nano
 
 # completion confiuration
-autoload -U compinit; compinit -u
+autoload -Uz compinit && compinit
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # History configuration
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
-setopt hist_ignore_dups
-setopt share_history
+setopt hist_ignore_dups share_history hist_no_store 
 
 setopt auto_pushd
 setopt list_packed
@@ -19,24 +18,21 @@ setopt nolistbeep
 # Alias configuration
 alias dco="docker-compose"
 
-if [ -d ${HOME}/git/dotfiles ]; then
-  zshrc_dir=${HOME}/git/dotfiles/zsh
-elif [ -d ${HOME}/bin/dotfiles ]; then
-  zshrc_dir=${HOME}/bin/dotfiles/zsh
-elif [ -d ${HOME}/servers/dotfiles ]; then
-   zshrc_dir=${HOME}/servers/dotfiles/zsh
-fi
+local DOTFILES=$(dirname $(realpath $0))
 
 if [ "$(uname)" = 'Darwin' ]; then
-  source ${zshrc_dir}/darwin.zshrc    
+  source ${DOTFILES}/zsh/darwin.zshrc    
 elif [ "$(expr substr $(uname -s) 1 5)" = 'Linux' ]; then
-  source  ${zshrc_dir}/linux.zshrc
+  source  ${DOTFILES}/zsh/linux.zshrc
   if [ -e /etc/debian_version -o -e /etc/debian_release ]; then
-    source ${zshrc_dir}/debian.zshrc
+    source ${DOTFILES}/zsh/debian.zshrc
   elif [ -e /etc/arch-release ]; then
-    source ${zshrc_dir}/archlinux.zshrc
+    source ${DOTFILES}/zsh/archlinux.zshrc
   fi
 fi
+
+[ -f ${DOTFILES}/p10k.zsh ] && source ${DOTFILES}/p10k.zsh
+source ${DOTFILES}/zsh/theme/powerlevel/powerlevel10k.zsh-theme
 
 # direnv configuration
 [ -x $(which direnv) ] && eval "$(direnv hook zsh)"
