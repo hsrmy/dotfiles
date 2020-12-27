@@ -14,7 +14,7 @@ setopt nolistbeep
 # Alias configuration
 alias dco="docker-compose"
 
-local DOTFILES=$(dirname $(realpath .zshrc))
+local DOTFILES=$(dirname $(realpath ${HOME}/.zshrc))
 
 if [ "$(uname)" = 'Darwin' ]; then
   source ${DOTFILES}/zsh/darwin.zshrc    
