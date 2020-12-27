@@ -27,9 +27,7 @@ HISTSIZE=1000000
 SAVEHIST=1000000
 setopt hist_ignore_dups share_history hist_no_store 
 
-setopt auto_pushd
-setopt list_packed
-setopt nolistbeep
+setopt auto_pushd list_packed nolistbeep
 
 # Alias configuration
 alias dco="docker-compose"
