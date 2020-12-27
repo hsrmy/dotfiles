@@ -1,10 +1,6 @@
 # Default editor
 export EDITOR=nano
 
-# completion confiuration
-autoload -Uz compinit && compinit
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-
 # History configuration
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
@@ -18,7 +14,7 @@ setopt nolistbeep
 # Alias configuration
 alias dco="docker-compose"
 
-local DOTFILES=$(dirname $(realpath $0))
+local DOTFILES=$(dirname $(realpath .zshrc))
 
 if [ "$(uname)" = 'Darwin' ]; then
   source ${DOTFILES}/zsh/darwin.zshrc    
@@ -33,6 +29,10 @@ fi
 
 [ -f ${DOTFILES}/p10k.zsh ] && source ${DOTFILES}/p10k.zsh
 source ${DOTFILES}/zsh/theme/powerlevel/powerlevel10k.zsh-theme
+
+# completion confiuration
+autoload -Uz compinit && compinit
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
 # direnv configuration
 [ -x $(which direnv) ] && eval "$(direnv hook zsh)"
