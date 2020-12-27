@@ -53,10 +53,10 @@ export GOPATH=$HOME/.go
 export PATH=$GOPATH/bin:$PATH
 
 # anyenv configuretion 
-[ -x $(which anyenv) ] && eval "$(anyenv init -)"
+[ -f /opt/anyenv/bin/anyenv ] && eval "$(anyenv init -)"
 
 # direnv configuration
-[ -x $(which direnv) ] && eval "$(direnv hook zsh)"
+[ -f $(which direnv) ] && eval "$(direnv hook zsh)"
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
