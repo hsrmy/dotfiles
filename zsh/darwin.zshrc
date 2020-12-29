@@ -1,7 +1,7 @@
 # Common darwin settings
 export LANG=ja_JP.UTF-8
 
-fpath=($HOME/.brew/share/zsh-completions /usr/local/share/zsh-completions/src /usr/share/zsh/vendor-completions $fpath)
+fpath=(/usr/local/share/zsh-completions/src /usr/share/zsh/vendor-completions $fpath)
 
 export PATH=/opt/anyenv/bin:$HOME/bin:$PATH
 export LESSOPEN='| /Users/hsrmy/bin/mylesspipe.sh %s'

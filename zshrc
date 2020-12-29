@@ -5,7 +5,7 @@ export EDITOR=nano
 HISTFILE=~/.zsh_history
 HISTSIZE=1000000
 SAVEHIST=1000000
-setopt hist_ignore_dups share_history hist_no_store 
+setopt hist_ignore_dups share_history hist_no_store
 
 setopt auto_pushd list_packed nolistbeep
 
@@ -16,7 +16,7 @@ alias dco="docker-compose"
 local DOTFILES=$(dirname $(realpath ${HOME}/.zshrc))
 
 if [ "$(uname)" = 'Darwin' ]; then
-  source ${DOTFILES}/zsh/darwin.zshrc    
+  source ${DOTFILES}/zsh/darwin.zshrc
 elif [ "$(expr substr $(uname -s) 1 5)" = 'Linux' ]; then
   source ${DOTFILES}/zsh/linux.zshrc
 fi
@@ -25,7 +25,7 @@ fi
 source ${DOTFILES}/zsh/theme/powerlevel/powerlevel10k.zsh-theme
 
 # completion confiuration
-autoload -Uz compinit && compinit
+autoload -Uz compinit && compinit -u
 zstyle ':completion:*' auto-description 'specify: %d'
 zstyle ':completion:*' completer _expand _complete _correct _approximate
 zstyle ':completion:*' format 'Completing %d'
@@ -48,7 +48,7 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 export GOPATH=$HOME/.go
 export PATH=$GOPATH/bin:$PATH
 
-# anyenv configuretion 
+# anyenv configuretion
 [ -f /opt/anyenv/bin/anyenv ] && eval "$(anyenv init -)"
 
 # direnv configuration
