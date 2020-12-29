@@ -49,6 +49,7 @@ export GOPATH=$HOME/.go
 export PATH=$GOPATH/bin:$PATH
 
 # anyenv configuretion
+export ANYENV_ROOT="/opt/anyenv"
 [ -f /opt/anyenv/bin/anyenv ] && eval "$(anyenv init -)"
 
 # direnv configuration
