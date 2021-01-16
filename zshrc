@@ -65,5 +65,12 @@ function command_not_found_handler() {
     echo "(*>△ <)＜\"$1\"なんてコマンド見つからないよっっ"
     echo "(*>△ <)＜ナーンナーンっっ"
   fi
+
+  if [ -e /etc/debian_version ] || [ -e /etc/debian_release ]; then
+    if [[ -x /usr/lib/command-not-found ]] ; then
+        [[ -x /usr/lib/command-not-found ]] || return 1
+        /usr/lib/command-not-found --no-failure-msg -- ${1+"$1"} && :
+    fi
+  fi
   return 127;
 }
