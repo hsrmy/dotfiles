@@ -1,0 +1,7 @@
+#!/bin/sh
+if [ $(hostnamectl|grep "Virtualization") ==  ""]; then
+    sensors -j 2> /dev/null | \
+    jq '[(.[]|select(.Tdie != null)|.Tdie|
+        .temp1_input*10|floor/10)] as $data|
+        "CPU Temp 0: \($data[0])°C, CPU Temp 1: \($data[1])°C, Average CPU Temp: \($data|add/length*10|floor/10)°C"'
+fi
