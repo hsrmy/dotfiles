@@ -1,5 +1,6 @@
 #!/bin/sh
 if [ $(hostnamectl|grep "Virtualization") ==  ""]; then
+    #sensors "k10temp-pci-*"|grep Tdie
     sensors -j 2> /dev/null | \
     jq '[(.[]|select(.Tdie != null)|.Tdie|
         .temp1_input*10|floor/10)] as $data|
