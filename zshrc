@@ -44,13 +44,17 @@ zstyle ':completion:*' verbose true
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
+# anyenv configuretion
+export ANYENV_ROOT="/opt/anyenv"
+export ANYENV_DEFINITION_ROOT=$ANYENV_ROOT/config
+export PATH=$ANYENV_ROOT/bin:$PATH
+fpath=(${ANYENV_ROOT}/completions $fpath)
+[ -f /opt/anyenv/bin/anyenv ] && eval "$(anyenv init -)"
+
 # go path
 export GOPATH=$HOME/.go
 export PATH=$GOPATH/bin:$PATH
-
-# anyenv configuretion
-export ANYENV_ROOT="/opt/anyenv"
-[ -f /opt/anyenv/bin/anyenv ] && eval "$(anyenv init -)"
+export GOENV_DISABLE_GOPATH=1
 
 # direnv configuration
 [ -f /usr/local/bin/direnv ] && eval "$(direnv hook zsh)"
@@ -74,3 +78,6 @@ function command_not_found_handler() {
   fi
   return 127;
 }
+
+# PATHの重複削除
+typeset -U path PATH
