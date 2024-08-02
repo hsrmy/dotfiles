@@ -9,16 +9,28 @@ setopt hist_ignore_dups share_history hist_no_store
 
 setopt auto_pushd list_packed nolistbeep
 
+# anyenv configuretion
+export ANYENV_ROOT="/opt/anyenv"
+export ANYENV_DEFINITION_ROOT=${ANYENV_ROOT}/config
+export PATH=$ANYENV_ROOT/bin:$PATH
+fpath=(${ANYENV_ROOT}/completions $fpath)
+
 # Alias configuration
-alias ls="ls --color"
-alias dco="docker-compose"
+alias dco="docker compose"
+alias ipinfo="curl -sS https://ipinfo.io|jq -r '.ip'"
+alias gitbd="git branch --merged|egrep -v '\*|pre-staging|staging|develop|main|master'|xargs git branch -d"
+alias nodeenv="nodenv"
+alias asls="aws sso login --profile staging"
+alias aslp="aws sso login --profile prod"
 
 local DOTFILES=$(dirname $(realpath ${HOME}/.zshrc))
 
 if [ "$(uname)" = 'Darwin' ]; then
   source ${DOTFILES}/zsh/darwin.zshrc
+  local PLATFORM='mac'
 elif [ "$(expr substr $(uname -s) 1 5)" = 'Linux' ]; then
   source ${DOTFILES}/zsh/linux.zshrc
+  local PLATFORM='linux'
 fi
 
 [ -f ${DOTFILES}/p10k.zsh ] && source ${DOTFILES}/p10k.zsh
@@ -44,23 +56,10 @@ zstyle ':completion:*' verbose true
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
-# anyenv configuretion
-export ANYENV_ROOT="/opt/anyenv"
-export ANYENV_DEFINITION_ROOT=$ANYENV_ROOT/config
-export PATH=$ANYENV_ROOT/bin:$PATH
-fpath=(${ANYENV_ROOT}/completions $fpath)
-[ -f /opt/anyenv/bin/anyenv ] && eval "$(anyenv init -)"
-
 # go path
 export GOPATH=$HOME/.go
 export PATH=$GOPATH/bin:$PATH
 export GOENV_DISABLE_GOPATH=1
-
-# direnv configuration
-[ -f /usr/local/bin/direnv ] && eval "$(direnv hook zsh)"
-
-# fzf
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 function command_not_found_handler() {
   if [ $(( $(od -vAn --width=4 -tu4 -N4 </dev/urandom) % 5 )) -lt 4 ]; then
@@ -79,5 +78,39 @@ function command_not_found_handler() {
   return 127;
 }
 
-# PATHの重複削除
+# Setting for peco
+function peco-select-history() {
+  BUFFER=$(\history -n -r 1 | peco --query "$LBUFFER")
+  CURSOR=$#BUFFER
+  zle clear-screen
+}
+if type peco &> /dev/null; then
+  zle -N peco-select-history
+  bindkey '^R' peco-select-history
+else
+  echo "Shortcut ^R (peco-select-history) is disabled! (Please install \"peco\")"
+fi
+
+# Setting for ghq
+function ghq-cd() {
+  local selected_dir=$(ghq list | peco --query "$LBUFFER")
+  if [ -n "$selected_dir" ]; then
+    BUFFER="cd ~/git/${selected_dir}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+if type peco &> /dev/null && type peco &> /dev/null; then
+  zle -N ghq-cd
+  bindkey '^]' ghq-cd
+else
+  echo "Shortcut ^] (ghq-cd) is disabled! (Please install \"ghq\" and \"peco\")"
+fi
+
+# Remove duplicate PATHs
 typeset -U path PATH
+
+autoload -U +X bashcompinit && bashcompinit
+
+complete -C "/opt/homebrew/bin/aws_completer" aws
+complete -o nospace -C /opt/anyenv/envs/tfenv/bin/terraform terraform
