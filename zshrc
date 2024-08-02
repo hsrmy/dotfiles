@@ -20,8 +20,6 @@ alias dco="docker compose"
 alias ipinfo="curl -sS https://ipinfo.io|jq -r '.ip'"
 alias gitbd="git branch --merged|egrep -v '\*|pre-staging|staging|develop|main|master'|xargs git branch -d"
 alias nodeenv="nodenv"
-alias asls="aws sso login --profile staging"
-alias aslp="aws sso login --profile prod"
 
 local DOTFILES=$(dirname $(realpath ${HOME}/.zshrc))
 
