@@ -130,7 +130,13 @@ function command_not_found_handler() {
 }
 
 function peco-select-history() {
-  BUFFER=$(\history -f -n -r 1 | peco --query "$LBUFFER")
+  local sel cmd
+  sel=$(\history -i -f -n -r 1 | peco --query "$LBUFFER")
+  [[ -z $sel ]] && return
+
+  cmd=$(printf "%s\n" "$sel" | sed -E 's|^[0-9]{4}-[0-9]{2}-[0-9]{2}[[:space:]]+[0-9]{2}:[0-9]{2}[[:space:]]+||')
+
+  BUFFER="$cmd"
   CURSOR=$#BUFFER
   zle clear-screen
 }
