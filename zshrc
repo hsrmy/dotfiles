@@ -1,8 +1,10 @@
+
+# Kiro CLI pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
+
 # =============================================================================
 # Amazon Q integration
 # =============================================================================
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.pre.zsh"
-
 # =============================================================================
 # Basic configuration
 # =============================================================================
@@ -81,8 +83,10 @@ zstyle ':completion:*' completer _expand _complete _correct _approximate
 zstyle ':completion:*' format 'Completing %d'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' menu select=2
-eval "$(dircolors -b)"
-zstyle ':completion:*:default' list-colors "${(s.:.)LS_COLORS}"
+if command -v dircolors &> /dev/null; then
+  eval "$(dircolors -b)"
+  zstyle ':completion:*:default' list-colors "${(s.:.)LS_COLORS}"
+fi
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
 zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
@@ -113,7 +117,14 @@ fi
 # Functions
 # =============================================================================
 function command_not_found_handler() {
-  if [ $(( $(od -vAn --width=4 -tu4 -N4 </dev/urandom) % 5 )) -lt 4 ]; then
+  local random_value
+  if [ "$(uname)" = 'Darwin' ]; then
+    random_value=$(jot -r 1 0 4)
+  else
+    random_value=$(( $(od -vAn --width=4 -tu4 -N4 </dev/urandom) % 5 ))
+  fi
+
+  if [ "$random_value" -lt 4 ]; then
     echo "\"$1\"なんてコマンド見つからないよ〜(●・▽ ・●)"
   else
     echo "(*>△ <)＜\"$1\"なんてコマンド見つからないよっっ"
@@ -166,4 +177,7 @@ fi
 # =============================================================================
 # Amazon Q integration
 # =============================================================================
-[[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
+
+
+# Kiro CLI post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
